@@ -1,0 +1,10 @@
+/* Empty. Add your own CSS if you like */
+input.default-color {
+	color: #145fd7;
+}
+
+input.hashtag {
+	font-size: 130%;
+	font-weight: bold;
+	text-transform:uppercase;
+}
