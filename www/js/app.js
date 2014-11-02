@@ -76,7 +76,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           controller: 'AccountCtrl'
         }
       }
+    })
+
+    .state('tab.addfeedback', {
+      url: '/addfeedback',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/add-feedback.html',
+          controller: 'AddFeedback'
+        }
+      }
     });
+
+    
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/dash');
