@@ -1,4 +1,4 @@
-<ion-view title="FeedBack">
+<ion-view title="Feedback">
   <ion-content class="padding">
     
     <!--HASHTAG -->
@@ -11,7 +11,12 @@
 
 	<!-- GeoLocation Search -->
 	<h4 align="center">Near You</h4>
-	<div class="list">
+  <ion-list class="list">
+      <ion-item ng-repeat="hastagi in hashtags" type="item-text-wrap" href="#/tab/sendfeedback"class="item item-icon-left" >
+    <i class="icon {{hastagi.image}}"></i>{{hastagi.hastag}}<span class="badge">{{hastagi.note}}</span>
+      </ion-item>
+    </ion-list>
+	<!--<div class="list">
 
   <a class="item item-icon-left" href="#">
     <i class="icon ion-email"></i>
@@ -43,7 +48,7 @@
     <span class="badge badge-positive">2</span>
   </a>
 
-</div>
+</div>-->
 
   </ion-content>
 </ion-view>

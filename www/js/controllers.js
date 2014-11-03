@@ -1,5 +1,6 @@
 angular.module('starter.controllers', [])
-.controller('DashCtrl', function($scope) {
+.controller('DashCtrl', function($scope, NearYous) {
+	$scope.hashtags = NearYous.all();
 })
 
 .controller('FriendsCtrl', function($scope, Friends) {
@@ -13,7 +14,22 @@ angular.module('starter.controllers', [])
 .controller('AccountCtrl', function($scope) {
 })
 
-.controller('AddFeedback', function($scope,$ionicPopup,$timeout) {
+.controller('SendFeedbackCtrl', function($scope) {
+})
+
+.controller('ToggleCtrl', function($scope){
+
+	// $scope.yesornoValue = "Yes";
+	$scope.yesOrNoFunc = function(){
+  	if($scope.yesornoValueBool == true){
+  		$scope.yesornoValue = "Yes";
+  	}else{
+  		$scope.yesornoValue = "No";
+  	}
+	}
+})
+
+.controller('AddFeedbackCtrl', function($scope,$ionicPopup,$timeout) {
 	$scope.showPopup = function() {
   	$scope.data = {}
 	var myPopup = $ionicPopup.show({

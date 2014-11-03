@@ -83,7 +83,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       views: {
         'tab-account': {
           templateUrl: 'templates/add-feedback.html',
-          controller: 'AddFeedback'
+          controller: 'AddFeedbackCtrl'
+        }
+      }
+    })
+
+    .state('tab.sendfeedback', {
+      url: '/sendfeedback',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/sendfeedback.html',
+          controller: 'SendFeedbackCtrl'
         }
       }
     });

@@ -8,6 +8,18 @@ input.hashtag {
 	font-weight: bold;
 	text-transform:uppercase;
 }
+
 .round-edges{
 	border-radius: 100%;
+}
+
+
+.yesorno{
+	position: absolute;
+	top: 15px;
+	right: 80px;
+}
+
+.no-list-border{
+	border-width:0px!important;
 }
