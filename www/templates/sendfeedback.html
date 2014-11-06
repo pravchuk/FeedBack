@@ -1,5 +1,5 @@
 <ion-view title="#MSELAB2014">
-  <ion-content class="padding">
+  <ion-content class="padding" >
   	<div class="card" style="background-color:#f8f8f8;">
 	  	<h3>Overall Rating</h3>
 	    	<div class="range range-positive">
@@ -8,7 +8,17 @@
 			  	<i class="icon ion-happy"></i>
 			</div>
 	</div>
-	<div class="card">
+	
+	
+	<div ng-bind-html="item" ng-repeat="item in fill track by $index">
+		
+	</div>
+	
+	
+	
+	
+
+	<!--div class="card">
 	  	<h4>Rating</h4>
 	    	<div class="range range-positive">
 			  	<i class="icon ion-sad"></i>
@@ -59,8 +69,9 @@
 	  		<span class="input-label h4">Number</span>
 	  		<input type="number" placeholder="Enter Number">
 		</label>
-	</div>
-
+	</div-->
+	
+	<!--ion-item normal="fill">{{fill}}</ion-item-->
 	<!-- CARDLISTS OF ELEMENTS -->
 
 	<button class="button button-block button-positive">

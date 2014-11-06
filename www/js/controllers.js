@@ -23,8 +23,132 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('SendFeedbackCtrl', function($scope) {
+.controller('SendFeedbackCtrl', function($scope,$sce) {
+
+$scope.dummy = [{"type":"rating","question":"How is this?","options":{}},{"type":"rating","question":"How is this?","options":{}}];
+
+	$scope.genElement = function(type,args) //i think u need to put it in services.
+	{		
+		var s;
+		if(type == 'rating')
+		{	
+			//type = rating, args = [Label]
+			s='<div class="card">\
+					<h4>' +args[0] + '</h4>\
+						<div class="range range-positive">\
+							<i class="icon ion-sad"></i>\
+							<input type="range" name="volume">\
+							<i class="icon ion-happy"></i>\
+						</div>\
+				</div>';
+		}
+		else if(type == 'number')
+		{
+			//type = number, args = [Label,placeholder]
+			s = '<div class="card">\
+				<label class="item item-input no-list-border">\
+					<span class="input-label h4">'+args[0]+'</span>\
+					<input type="number" placeholder="'+args[1]+'">\
+				</label>\
+			</div>';
+		}
+		else if(type == 'date')
+		{
+			//type = date, args = [Label]
+			s = '<div class="card">\
+					<label class="item item-input no-list-border">\
+						<span class="input-label h4">'+args[0]+'</span>\
+						<input type="date" placeholder="dd/mm/yyyy">\
+					</label>\
+				</div>';
+		}
+		else if(type == 'long')
+		{
+			//type = long, args = [Label,placeholder,rows]
+			s = '<div class="card">\
+					<h4>'+args[0]+'</h4>\
+					<textarea placeholder="'+ args[1] +'" rows='+ args[2] +'>\</textarea>\
+				</div>';
+		}
+		else if(type == 'boolean')
+		{
+			//type = boolean, args = [Label]
+			s = '	<div class="card">\
+						  <label class="item item-toggle no-list-border">\
+							 <span class="h4">'+args[0]+'</span>\
+							 <label class="toggle toggle-positive">\
+							   <input type="checkbox" ng-model="yesornoValueBool" ng-change="yesOrNoFunc()">\
+							   <div class="track">\
+								 <div class="handle"></div>\
+							   </div>\
+							 </label>\
+							 <span class="yesorno positive">{{yesornoValue}}</span>\
+						  </label>\
+					</div>';
+		}
+		else if(type == 'select')
+		{
+			//type = select, args = [Label,[<option1>,<option2>]]
+			s = '<div class="card">\
+					<label class="item item-input item-select no-list-border">\
+						<div class="input-label">\
+						  <span class="h4">'+args[0]+'</span>\
+						</div>\
+						<select>';
+						
+						for(var i=0;i<args[1].length;i++)
+							s+= '<option>'+args[1][i]+'</option>';
+						  
+			s +=		'</select>\
+					 </label>\
+				</div>';
+			//return s;
+		}
+		//alert("hi");
+		//alert();
+		return $sce.trustAsHtml(s);
+	}
+		
+		$scope.genForm = function (questionOb){
+		//alert(questionOb);
+			var s=[];
+			for (var i =0;i< questionOb.length;i++)
+			{
+				
+				var type = questionOb[i].type;
+				var question = questionOb[i].question;
+				var op = questionOb[i].options;
+				if(type == 'yesorno') s.push($scope.genElement('boolean',[question])); 
+				else if(type == 'rating') s.push($scope.genElement('rating',[question])); 
+				else if(type == 'number') s.push($scope.genElement('number',[question,op.placeholder])); 
+				else if(type == 'long') s.push($scope.genElement('long',[question,op.placeholder,op.size])); 
+				else if(type == 'date') s.push($scope.genElement('date',[question]));
+				else if(type == 'select') s.push($scope.genElement('select',[question,op.values]));
+				
+			}
+			return s;
+			
+			
+		}
+		
+		$scope.fill = $scope.genForm($scope.dummy);
+		
+		console.log($scope.fill);
+		
+		
+	
 })
+
+/*
+$scope.questionFields = {"long" :{"type":"long","question":"","options":{"size","placeholder":"Enter Text"}}
+  ,"yesorno":{"type":"yesorno","question":"","options":{"yes":"Yes","no":"No","default":false}}
+  ,"date":{"type":"date","question":"","options":{"placeholder":"Enter Date"}}
+  ,"number":{"type":"number","question":"","options":{"placeholder":"Enter Number"}}
+  ,"select":{"type":"select","question":"","options":{"default":0}}		
+  ,"rating":{"type":"rating","question":"","options":{"range":"1-10"}}}; - range to implement
+
+*/
+
 
 
 .controller('ToggleCtrl', function($scope){
