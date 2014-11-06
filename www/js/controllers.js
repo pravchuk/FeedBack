@@ -25,6 +25,8 @@ angular.module('starter.controllers', [])
 
 .controller('SendFeedbackCtrl', function($scope,$sce) {
 
+  $scope.yesornoValue = false;
+
 $scope.dummy = [{"type":"rating","question":"How is this?","options":{}},{"type":"rating","question":"How is this?","options":{}}];
 
 	$scope.genElement = function(type,args) //i think u need to put it in services.
@@ -152,8 +154,7 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
 
 
 .controller('ToggleCtrl', function($scope){
-
-	// $scope.yesornoValue = "Yes";
+	$scope.yesornoValue = "Yes";
 	$scope.yesOrNoFunc = function(){
   	if($scope.yesornoValueBool == true){
   		$scope.yesornoValue = "Yes";
@@ -229,7 +230,8 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
             //                 break;
 
             // }
-           	alert($scope.data.typeofquestion);
+            $scope.getNewElement($scope.data.typeofquestion);
+           	
              return $scope.data.wifi;
            }
         }
@@ -239,9 +241,83 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
 	
  }
 
- // $scope.getNewElement = function(){
- //    $scope.
- // }
+
+ $scope.getNewElement = function(typeofquestion){
+  var Mytemplate;
+    switch(typeofquestion){
+      case 'long': Mytemplate = '<div class="card">\
+                                  <input type="text" placeholder="Enter Question"/>\
+                                  <input type="number" placeholder="Enter Number of Rows"/>\
+                                  <input type="text" placeholder="Enter Question Placeholder"/>\
+                                  <input type="text" placeholder="Enter Answer Placeholder"/>\
+                                </div>';
+                      break;
+      case 'rating' : Mytemplate = '<div class="card">\
+                                      <input type="text" placeholder="Enter Question"/>\
+                                      <input type="number" placeholder="Enter Start of Range"/>\
+                                      <input type="number" placeholder="Enter End of Range"/>\
+                                    </div>';
+                      break;
+      case 'select' : Mytemplate = '<div class="card">\
+                                      <input type="text" placeholder="Enter Question"/>\
+                                      <input type="number" placeholder="Enter Option 1"/>\
+                                      <input type="number" placeholder="Enter Option 2"/>\
+                                      <input type="number" placeholder="Enter Option 3"/>\
+                                    </div>';
+                      break;
+      case 'date' : Mytemplate = '<div class="card">\
+                                      <input type="text" placeholder="Enter Question"/>\
+                                    </div>';
+                      break;
+      case 'number': Mytemplate = '<div class="card">\
+                                      <input type="text" placeholder="Enter Question"/>\
+                                    </div>';
+                      break;
+      case 'yesorno': Mytemplate = '<div class="card">\
+                                      <input type="text" placeholder="Enter Question"/>\
+                                      <input type="number" placeholder="Yes Value"/>\
+                                      <input type="number" placeholder="No Value"/>\
+                                    </div>';
+                      break;
+      
+    }
+
+    var getElementPopUp = $ionicPopup.show({
+      template : Mytemplate,
+      title: 'Question Fields',
+      subTitle: 'Enter Options for the Question',
+      scope: $scope,
+      buttons: [
+      { text: 'Cancel' },
+      {
+        text: '<b>Add</b>',
+        type: 'button-positive',
+        onTap: function(e) {
+
+          if (!$scope.data.typeofquestion) {
+             //don't allow the user to close unless he enters wifi password
+             e.preventDefault();
+           } else {
+              //var htmlInputElement;
+            // switch($scope.data.typeofquestion){
+            //   case 'long':  htmlInputElement = '<div class="card">\
+            //                     <input type="text" name="q1" placeholder="Question"/>\
+            //                     <input type="number" name="number"/>\
+            //                 </div>';
+
+            //                 console.log(htmlInputElement);
+            //                 break;
+
+            // }
+            
+             return $scope.data.wifi;
+           }
+        }
+      },
+    ]
+
+    });
+ }
 
  // Form data for the login modal
     $scope.loginData = {};
