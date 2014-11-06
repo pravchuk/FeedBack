@@ -159,10 +159,7 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
 
 
 .controller('ToggleCtrl', function($scope){
-<<<<<<< HEAD
-=======
 
->>>>>>> FETCH_HEAD
 	$scope.yesornoValue = "Yes";
 	$scope.yesOrNoFunc = function(){
   	if($scope.yesornoValueBool == true){
