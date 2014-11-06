@@ -10,14 +10,21 @@ angular.module('starter.services',[])
                 }
             });
         },
-        get:function(id){
-            return $http.get('https://api.parse.com/1/classes/form/'+id,{
-                headers:{
-                    'X-Parse-Application-Id': PARSE_CREDENTIALS.APP_ID,
-                    'X-Parse-REST-API-Key':PARSE_CREDENTIALS.REST_API_KEY,
-                }
-            });
-        },
+        get:function(scope,resCallback){
+			var form = Parse.Object.extend("form");
+			var query = new Parse.Query(form);
+			query.equalTo("hash", "#MSEpresentation");
+			query.find({
+				success: function(results) {
+					alert("Successfully retrieved " + results.length + " scores.");
+					resCallback.call(scope,results[0].get('layout'));
+					console.log(scope.text);
+			},
+		error: function(error) {
+			alert("Error: " + error.code + " " + error.message);
+		}
+	});
+		},		
         create:function(data){
             return $http.post('https://api.parse.com/1/classes/form',data,{
                 headers:{
