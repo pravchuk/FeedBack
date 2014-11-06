@@ -25,7 +25,13 @@ angular.module('starter.controllers', [])
 
 .controller('SendFeedbackCtrl', function($scope,$sce) {
 
-$scope.dummy = [{"type":"rating","question":"How is this?","options":{}},{"type":"rating","question":"How is this?","options":{}}];
+$scope.dummy = [{"type":"rating","question":"How is this?","options":{}},
+				{"type":"yesorno","question":"Did u like it?","options":{}},
+				{"type":"date","question":"When do u want it?","options":{}},
+				{"type":"long","question":"Tell Me about yourself","options":{"placeholder" : "Text Goes here"}},
+				{"type":"number","question":"can i have ur nunber","options":{"placeholder" : "eg : 10"}},
+				{"type":"select","question":"Pick one","options":{"values":['pallal','chukka','niraj']}}
+];
 
 	$scope.genElement = function(type,args) //i think u need to put it in services.
 	{		
@@ -124,6 +130,7 @@ $scope.dummy = [{"type":"rating","question":"How is this?","options":{}},{"type"
 				else if(type == 'long') s.push($scope.genElement('long',[question,op.placeholder,op.size])); 
 				else if(type == 'date') s.push($scope.genElement('date',[question]));
 				else if(type == 'select') s.push($scope.genElement('select',[question,op.values]));
+				//else if(type == 'select') alert(op.values);
 				
 			}
 			return s;
@@ -153,7 +160,7 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
 
 .controller('ToggleCtrl', function($scope){
 
-	// $scope.yesornoValue = "Yes";
+	$scope.yesornoValue = "Yes";
 	$scope.yesOrNoFunc = function(){
   	if($scope.yesornoValueBool == true){
   		$scope.yesornoValue = "Yes";
