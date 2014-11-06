@@ -16,7 +16,7 @@ angular.module('starter.services',[])
 			query.equalTo("hash", "#MSEpresentation");
 			query.find({
 				success: function(results) {
-					alert("Successfully retrieved " + results.length + " scores.");
+					//alert("Successfully retrieved " + results.length + " scores.");
 					resCallback.call(scope,results[0].get('layout'));
 					console.log(scope.text);
 			},

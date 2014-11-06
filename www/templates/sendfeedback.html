@@ -4,16 +4,18 @@
 	  	<h3>Overall Rating</h3>
 	    	<div class="range range-positive">
 			  	<i class="icon ion-sad"></i>
-			  	<input type="range" name="volume">
+			  	<input type="range" name="volume" ng-model="overall">
 			  	<i class="icon ion-happy"></i>
 			</div>
 	</div>
+{{overall}}
 	
 	
-	<div ng-bind-html="item" ng-repeat="item in fill track by $index">
+	test<p ng-bind="yesornoValueBool"></p>
+	{{yesornoValueBool}}
+	<div ng-bind-html="item" ng-repeat="item in fill track by $index" >
 		
 	</div>
-	
 	
 	
 	
@@ -74,9 +76,10 @@
 	<!--ion-item normal="fill">{{fill}}</ion-item-->
 	<!-- CARDLISTS OF ELEMENTS -->
 
-	<button class="button button-block button-positive" ng-click="">
+	<button class="button button-block button-positive" ng-click="submit()">
   			
 			Send Feedback
 	</button>
+	{{resultsDisplay}}
   </ion-content>
 </ion-view>

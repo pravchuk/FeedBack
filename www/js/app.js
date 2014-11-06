@@ -91,6 +91,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
+	.state('tab.results', {
+      url: '/results',
+      views: {
+        'tab-results': {
+          templateUrl: 'templates/results.html',
+          controller: 'resultctrl'
+        }
+      }
+    })
+
     .state('tab.sendfeedback', {
       url: '/sendfeedback',
       views: {
