@@ -138,6 +138,7 @@ angular.module('starter.controllers', [])
 		}
 		
 		form.get($scope,$scope.genForm);
+		form.insert();
 		
 		$scope.submit = function(){
 			var ob = document.getElementsByClassName('valueHolder');

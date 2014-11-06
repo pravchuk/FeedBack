@@ -18,13 +18,40 @@ angular.module('starter.services',[])
 				success: function(results) {
 					//alert("Successfully retrieved " + results.length + " scores.");
 					resCallback.call(scope,results[0].get('layout'));
-					console.log(scope.text);
+					//console.log(scope.text);
 			},
 		error: function(error) {
 			alert("Error: " + error.code + " " + error.message);
 		}
 	});
-		},		
+		},
+			insert:function(){
+			
+				
+				var ip = [9,8,"prafulla","no"];
+			
+				//Extend the native Parse.Object class.
+				var Input = Parse.Object.extend("results");
+ 
+				//Instantiate an object of the Input class
+				var input = new Input();
+ 
+				//listItem is now the object that we want to save, so we assign the properties that we want on it.
+				//input.set("fid", "somefid");
+				input.set("user_input", ip);
+ 
+				//We call the save method, and pass in success and failure callback functions.
+				input.save(null, {       
+					success: function(item) {
+					
+					//Success Callback 
+				},
+				error: function(gameScore, error) {
+					alert("insertion failed");
+					//Failure Callback
+				}
+				});
+			},
         create:function(data){
             return $http.post('https://api.parse.com/1/classes/form',data,{
                 headers:{
