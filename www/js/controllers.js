@@ -165,12 +165,12 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
 
 .controller('AddFeedbackCtrl', function($scope,$ionicPopup,$ionicModal,$timeout) {
 
-  $scope.questionFields = {'long' :{"type":"long","question":"","options":{"size":3,"placeholder":"Enter Text"}},
-  ,{"type":"yesorno","question":"","options":{"default":false}};
-  $scope.questionFields['date'] = {"type":"date","question":"","options":{"placeholder":"Enter Date"}};
-  $scope.questionFields['number'] = {"type":"number","question":"","options":{"placeholder":"Enter Number"}};
-  $scope.questionFields['select'] = {"type":"select","question":"","options":{"default":0}};
-  $scope.questionFields['rating'] = {"type":"rating","question":"","options":{"range":"1-10"}};
+  $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size":3,"placeholder":"Enter Text"}}
+  ,"yesorno":{"type":"yesorno","question":"","options":{"yes":"Yes","no":"No","default":false}}
+  ,"date":{"type":"date","question":"","options":{"placeholder":"Enter Date"}}
+  ,"select":{"type":"select","question":"","options":{"default":0,"values":[]}}
+  ,"number":{"type":"number","question":"","options":{"placeholder":"Enter Number"}}
+  ,"rating":{"type":"rating","question":"","options":{"range":"1-10"}}};
 
   // [{
   //   "type":"long",
@@ -192,13 +192,17 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
 
 
 	$scope.showPopup = function() {
-  	$scope.data = {}
-	var myPopup = $ionicPopup.show({
+  	
+    $scope.data = {};
+
+	  var myPopup = $ionicPopup.show({
     template: "<div class='list'>\
     <label class='item item-radio'><input type='radio' name='typeofquestion' value='long' ng-model='data.typeofquestion'><div class='item-content'>Long Answer</div><i class='radio-icon ion-checkmark'></i></label>\
-    <label class='item item-radio'><input type='radio' name='typeofquestion' checked='checked' value='rating' ng-model='data.typeofquestion'><div class='item-content'>Rating</div><i class='radio-icon ion-checkmark'></i></label>\
-    <label class='item item-radio'><input type='radio' name='typeofquestion' value='date' ng-model='data.typeofquestion'><div class='item-content'>Date</div><i class='radio-icon ion-checkmark'></i></label>\
+    <label class='item item-radio'><input type='radio' name='typeofquestion' value='rating' checked='checked' ng-model='data.typeofquestion'><div class='item-content'>Rating</div><i class='radio-icon ion-checkmark'></i></label>\
     <label class='item item-radio'><input type='radio' name='typeofquestion' value='select' ng-model='data.typeofquestion'><div class='item-content'>Select From List</div><i class='radio-icon ion-checkmark'></i></label>\
+    <label class='item item-radio'><input type='radio' name='typeofquestion' value='date' ng-model='data.typeofquestion'><div class='item-content'>Date</div><i class='radio-icon ion-checkmark'></i></label>\
+    <label class='item item-radio'><input type='radio' name='typeofquestion' value='number' ng-model='data.typeofquestion'><div class='item-content'>Number</div><i class='radio-icon ion-checkmark'></i></label>\
+    <label class='item item-radio'><input type='radio' name='typeofquestion' value='yesorno' ng-model='data.typeofquestion'><div class='item-content'>Yes or No</div><i class='radio-icon ion-checkmark'></i></label>\
     </div>",
     title: 'Select Type of Question',
     subTitle: 'Please use normal things',
@@ -214,6 +218,17 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
              //don't allow the user to close unless he enters wifi password
              e.preventDefault();
            } else {
+              //var htmlInputElement;
+            // switch($scope.data.typeofquestion){
+            //   case 'long':  htmlInputElement = '<div class="card">\
+            //                     <input type="text" name="q1" placeholder="Question"/>\
+            //                     <input type="number" name="number"/>\
+            //                 </div>';
+
+            //                 console.log(htmlInputElement);
+            //                 break;
+
+            // }
            	alert($scope.data.typeofquestion);
              return $scope.data.wifi;
            }
@@ -223,6 +238,10 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
   });
 	
  }
+
+ // $scope.getNewElement = function(){
+ //    $scope.
+ // }
 
  // Form data for the login modal
     $scope.loginData = {};
