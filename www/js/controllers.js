@@ -58,7 +58,7 @@ angular.module('starter.controllers', [])
 	{
 		s='<div class="card" style="padding:5px;">\
 				<h3 style="float:left;margin:5px">'+label+'</h3>\
-				<span style="float:right; font: 16px calibri; margin:12px;color:#4a87ee;">'value.tr+':'+value.trvalue'<br/>'value.fl+':'+value.flvalue'</span>\
+				<span style="float:right; font: 16px calibri; margin:12px;color:#4a87ee;">'+value.tr+':'+value.trvalue+'<br/>'+value.fl+':'+value.flvalue+'</span>\
 			</div>';
 
 	}
