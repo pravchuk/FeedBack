@@ -47,6 +47,7 @@ angular.module('starter.services',[])
         }
     }
 }])
+
 .value('PARSE_CREDENTIALS',{
     APP_ID: 'ojt8l3zRlv5UB2ZX196lefTmnvP7mleBInzOyJMq',
     REST_API_KEY:'xwztpbOdOvwbjq6n3hXwxMsfd84gj6w2N1WSXCNB'
@@ -72,5 +73,107 @@ angular.module('starter.services',[])
       return friends[friendId];
     }
   }
+})
+
+
+.factory('AddFeedBackQuestionsObject', function(){
+    return {type:"long", myquestion:"Seom",myargs:[]};
+})
+
+.factory('globalFunctions', function(){
+    return {
+        genElement : function(type,question,args) //i think u need to put it in services.
+            {       
+                //long question   myargs:   0: Rows           1: placeholder
+                //rating question myargs:   0: Starting Range 1: Ending Range        
+                //select question myargs:   0: option1        1: option2       ..... onwards
+                //date question myargs: []
+                //number question myargs:   0: placeholder
+                //yesorno question myargs:  0: yes value      1: no
+                var s;
+                if(type === 'rating')
+                {   
+                    //type = rating, args = [Label]
+                    //rating question myargs:   0: Starting Range 1: Ending Range        
+                    s='<div class="card">\
+                            <h4>' +question + '</h4>\
+                                <div class="range range-positive">\
+                                    <i class="icon ion-sad"></i>\
+                                    <input type="range" name="volume">\
+                                    <i class="icon ion-happy"></i>\
+                                </div>\
+                        </div>';
+                }
+                else if(type === 'number')
+                {
+                    //type = number, args = [Label,placeholder]
+                    //number question myargs:   0: placeholder
+                    s = '<div class="card">\
+                        <label class="item item-input no-list-border">\
+                            <span class="input-label h4">'+question+'</span>\
+                            <input type="number" placeholder="'+args[0]+'">\
+                        </label>\
+                    </div>';
+                }
+                else if(type === 'date')
+                {
+                    //type = date, args = [Label]
+                    //date question myargs: []
+                    s = '<div class="card">\
+                            <label class="item item-input no-list-border">\
+                                <span class="input-label h4">'+question+'</span>\
+                                <input type="date" placeholder="dd/mm/yyyy">\
+                            </label>\
+                        </div>';
+                }
+                else if(type === 'long')
+                {
+                    //type = long, args = [Label,placeholder,rows]
+                    //long question   myargs:   0: Rows           1: placeholder
+                    s = '<div class="card">\
+                            <h4>'+question+'</h4>\
+                            <textarea placeholder="'+ args[1] +'" rows='+ args[0] +'>\</textarea>\
+                        </div>';
+                }
+                else if(type === 'yesorno')
+                {
+                    //type = boolean, args = [Label]
+                    //yesorno question myargs:  0: yes value      1: no
+                    s = '   <div class="card">\
+                                  <label class="item item-toggle no-list-border">\
+                                     <span class="h4">'+question+'</span>\
+                                     <label class="toggle toggle-positive">\
+                                       <input type="checkbox" ng-model="yesornoValueBool" ng-change="yesOrNoFunc()">\
+                                       <div class="track">\
+                                         <div class="handle"></div>\
+                                       </div>\
+                                     </label>\
+                                     <span class="yesorno positive">{{yesornoValue}}</span>\
+                                  </label>\
+                            </div>';
+                }
+                else if(type === 'select')
+                {
+                    //type = select, args = [Label,[<option1>,<option2>]]
+                    //select question myargs:   0: option1        1: option2       ..... onwards
+                    s = '<div class="card">\
+                            <label class="item item-input item-select no-list-border">\
+                                <div class="input-label">\
+                                  <span class="h4">'+question+'</span>\
+                                </div>\
+                                <select>';
+                                
+                                for(var i=0;i<args.length;i++)
+                                    s+= '<option>'+args[i]+'</option>';
+                                  
+                    s +=        '</select>\
+                             </label>\
+                        </div>';
+                    //return s;
+                }
+                return s;
+                //return $sce.trustAsHtml(s);
+            }
+    }
 });
 

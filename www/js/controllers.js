@@ -123,7 +123,7 @@ $scope.dummy = [{"type":"rating","question":"How is this?","options":{}},
 				
 				var type = questionOb[i].type;
 				var question = questionOb[i].question;
-				var op = questionOb[i].options;
+				var op = questionOb[i].myargs;
 				if(type == 'yesorno') s.push($scope.genElement('boolean',[question])); 
 				else if(type == 'rating') s.push($scope.genElement('rating',[question])); 
 				else if(type == 'number') s.push($scope.genElement('number',[question,op.placeholder])); 
@@ -170,7 +170,53 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
 	}
 })
 
-.controller('AddFeedbackCtrl', function($scope,$ionicPopup,$ionicModal,$timeout) {
+.controller('AddFeedbackCtrl', function($scope,$ionicPopup,$ionicModal,$sce,$timeout, AddFeedBackQuestionsObject, globalFunctions) {
+
+
+
+
+  //$scope.qObject = {};
+
+$scope.fill = [];
+  
+
+  $scope.genForm = function (questionOb){
+      //alert(questionOb);
+      var s=[];
+      for (var i =0;i< questionOb.length;i++)
+      {
+        var type = questionOb[i].itype;
+        var question = questionOb[i].myquestion;
+        var myargs = questionOb[i].myargs;
+        console.log(""+type+question+myargs);
+        console.log(globalFunctions.genElement(type,question,myargs));
+        s.push($sce.trustAsHtml(globalFunctions.genElement(type,question,myargs))); 
+        // if(type == 'yesorno') s.push($sce.trustAsHtml(globalFunctions.genElement('boolean',$scope.myquestion,$scope.myargs))); 
+        // else if(type == 'rating') s.push($sce.trustAsHtml(globalFunctions.genElement('rating',$scope.myquestion,$scope.myargs)));
+        // else if(type == 'number') s.push($sce.trustAsHtml(globalFunctions.genElement('number',$scope.myquestion,$scope.myargs)));
+        // else if(type == 'long') s.push($sce.trustAsHtml(globalFunctions.genElement('long',$scope.myquestion,$scope.myargs))); 
+        // else if(type == 'date') s.push($sce.trustAsHtml(globalFunctions.genElement('date',$scope.myquestion,$scope.myargs)));
+        // else if(type == 'select') s.push($sce.trustAsHtml(globalFunctions.genElement('select',$scope.myquestion,$scope.myargs)));
+        
+      }
+      console.log(s);
+      return s;
+      
+      
+    }
+
+    $scope.populateForm = function(type,question,myargs){
+      var dummy = [{itype:"rating",myquestion:"How is this?",myargs:[1,10]},
+        {itype:"yesorno",myquestion:"Did u like it?",myargs:['Yes','No']},
+        {itype:"date",myquestion:"When do u want it?",myargs:[]},
+        {itype:"long",myquestion:"Tell Me about yourself",myargs:['Write in Brief']},
+        {itype:"number",myquestion:"can i have ur nunber",myargs:['Enter a number']},
+        {itype:"select",myquestion:"Pick one",myargs:['Veg','NonVeg','Egg']}];
+      //$scope.fill = $scope.genForm(dummy);//["<p>HI</p>","<p>HI</p>"];
+      $scope.fill.push($sce.trustAsHtml(globalFunctions.genElement(type,question,myargs)))
+    }
+
+    
 
   $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size":3,"placeholder":"Enter Text"}}
   ,"yesorno":{"type":"yesorno","question":"","options":{"yes":"Yes","no":"No","default":false}}
@@ -225,7 +271,7 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
              //don't allow the user to close unless he enters wifi password
              e.preventDefault();
            } else {
-              //var htmlInputElement;
+            //var htmlInputElement;
             // switch($scope.data.typeofquestion){
             //   case 'long':  htmlInputElement = '<div class="card">\
             //                     <input type="text" name="q1" placeholder="Question"/>\
@@ -249,40 +295,55 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
 
 
  $scope.getNewElement = function(typeofquestion){
+  $scope.myquestionObj = AddFeedBackQuestionsObject;
+  //$scope.myquestionObj = 
+  //$scope.myquestion = $scope.myquestionObj.myquestion;
+  //alert($scope.myquestion);
+  //$scope.myargs = $scope.myquestionObj.myargs;
+  
+
   var Mytemplate;
+
+
+  //long question   myargs:   0: Rows           1: placeholder
+  //rating question myargs:   0: Starting Range 1: Ending Range        
+  //select question myargs:   0: option1        1: option2       ..... onwards
+  //date question myargs: []
+  //number question myargs:   0: placeholder
+  //yesorno question myargs:  0: yes value      1: no
+  
     switch(typeofquestion){
-      case 'long': Mytemplate = '<div class="card">\
-                                  <input type="text" placeholder="Enter Question"/>\
-                                  <input type="number" placeholder="Enter Number of Rows"/>\
-                                  <input type="text" placeholder="Enter Question Placeholder"/>\
-                                  <input type="text" placeholder="Enter Answer Placeholder"/>\
+      case 'long': Mytemplate = '<div class="card" ng-controller="QuestionInputCtrl">\
+                                  <input type="text" ng-model="myquestionObj.myquestion" placeholder="Enter Question"/>\
+                                  <input type="number" ng-model="myquestionObj.myargs[0]" placeholder="Enter Number of Rows"/>\
+                                  <input type="text" ng-model="myquestionObj.myargs[1]" placeholder="Enter Placeholder"/>\
                                 </div>';
                       break;
       case 'rating' : Mytemplate = '<div class="card">\
-                                      <input type="text" placeholder="Enter Question"/>\
-                                      <input type="number" placeholder="Enter Start of Range"/>\
-                                      <input type="number" placeholder="Enter End of Range"/>\
+                                      <input type="text" ng-model="myquestionObj.myquestion" placeholder="Enter Question"/>\
+                                      <input type="number" ng-model="myquestionObj.myargs[0]" placeholder="Enter Start of Range"/>\
+                                      <input type="number" ng-model="myquestionObj.myargs[1]" placeholder="Enter End of Range"/>\
                                     </div>';
                       break;
       case 'select' : Mytemplate = '<div class="card">\
-                                      <input type="text" placeholder="Enter Question"/>\
-                                      <input type="number" placeholder="Enter Option 1"/>\
-                                      <input type="number" placeholder="Enter Option 2"/>\
-                                      <input type="number" placeholder="Enter Option 3"/>\
+                                      <input type="text" ng-model="myquestionObj.myquestion" placeholder="Enter Question"/>\
+                                      <input type="number" ng-model="myquestionObj.myargs[0]" placeholder="Enter Option 1"/>\
+                                      <input type="number" ng-model="myquestionObj.myargs[1]" placeholder="Enter Option 2"/>\
+                                      <input type="number" ng-model="myquestionObj.myargs[2]" placeholder="Enter Option 3"/>\
                                     </div>';
                       break;
       case 'date' : Mytemplate = '<div class="card">\
-                                      <input type="text" placeholder="Enter Question"/>\
+                                      <input type="text" ng-model="myquestionObj.myquestion" placeholder="Enter Question"/>\
                                     </div>';
                       break;
       case 'number': Mytemplate = '<div class="card">\
-                                      <input type="text" placeholder="Enter Question"/>\
+                                      <input type="text" ng-model="myquestionObj.myquestion" placeholder="Enter Question"/>\
                                     </div>';
                       break;
       case 'yesorno': Mytemplate = '<div class="card">\
-                                      <input type="text" placeholder="Enter Question"/>\
-                                      <input type="number" placeholder="Yes Value"/>\
-                                      <input type="number" placeholder="No Value"/>\
+                                      <input type="text"  ng-model="myquestionObj.question" placeholder="Enter Question"/>\
+                                      <input type="number" ng-model="myquestionObj.myargs[0]" placeholder="Yes Value"/>\
+                                      <input type="number" ng-model="myquestionObj.myargs[1]" placeholder="No Value"/>\
                                     </div>';
                       break;
       
@@ -304,19 +365,10 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
              //don't allow the user to close unless he enters wifi password
              e.preventDefault();
            } else {
-              //var htmlInputElement;
-            // switch($scope.data.typeofquestion){
-            //   case 'long':  htmlInputElement = '<div class="card">\
-            //                     <input type="text" name="q1" placeholder="Question"/>\
-            //                     <input type="number" name="number"/>\
-            //                 </div>';
-
-            //                 console.log(htmlInputElement);
-            //                 break;
-
-            // }
+            $scope.populateForm($scope.data.typeofquestion,$scope.myquestionObj.myquestion,$scope.myquestionObj.myargs);
+            console.log($scope.myquestionObj.myquestion);
+            console.log($scope.myquestionObj.myargs);
             
-             return $scope.data.wifi;
            }
         }
       },
@@ -324,35 +376,10 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
 
     });
  }
+})
 
- // Form data for the login modal
-    $scope.loginData = {};
 
-    // Create the login modal that we will use later
-    $ionicModal.fromTemplateUrl('templates/login.html', {
-      scope: $scope
-    }).then(function(modal) {
-      $scope.modal = modal;
-    });
-
-    // Triggered in the login modal to close it
-    $scope.closeLogin = function() {
-      $scope.modal.hide();
-    };
-
-    // Open the login modal
-    $scope.login = function() {
-      $scope.modal.show();
-    };
-
-    // Perform the login action when the user submits the login form
-    $scope.doLogin = function() {
-      console.log('Doing login', $scope.loginData);
-
-      // Simulate a login delay. Remove this and replace with your login
-      // code if using a login system
-      $timeout(function() {
-        $scope.closeLogin();
-      }, 1000);
-    };
+.controller('QuestionInputCtrl', function($scope, AddFeedBackQuestionsObject){
+  $scope.myquestionObj = AddFeedBackQuestionsObject;
+  $scope.myargs = $scope.myquestionObj.myargs;
 });
