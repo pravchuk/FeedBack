@@ -94,9 +94,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 	.state('tab.results', {
       url: '/results',
       views: {
-        'tab-results': {
+        'tab-friends': {
           templateUrl: 'templates/results.html',
-          controller: 'resultctrl'
+          controller: 'resultsctrl'
         }
       }
     })

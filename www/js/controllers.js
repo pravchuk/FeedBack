@@ -18,6 +18,109 @@ angular.module('starter.controllers', [])
   $scope.friend = Friends.get($stateParams.friendId);
 })
 
+.controller('resultsctrl', function($scope,$sce) {
+  $scope.things=['Pallal is awesome','so is prafulla','this is the best app','i like ravi and chukka app'];
+  $scope.nos=['9845655555','9845990052','9986560718','8971780631'];
+  
+  
+  $scope.genElement = function(type,label,value)
+  {
+	var s;
+	if(type == 'rating')
+	{
+		s='  <div class="card" style="padding:5px;">\
+				<h3 style="float:left;margin:5px">'+label+'</h3>\
+				<img style="width:54px;float:right;position:relative;" src="/img/star.png"></img>\
+				<span style="float:right; font: 20px calibri; margin:12px;color:blue;">'+value+'</span>\
+			</div>';
+	}
+	else if(type == 'date')
+	{
+		s='  <div class="card" style="padding:5px;">\
+				<h3 style="float:left;margin:5px">'+label+'</h3>\
+				<span style="float:right; font: 20px calibri; margin:12px;color:#4a87ee;">'+value+'</span>\
+			</div>';
+
+	}
+	else if(type == 'long')
+	{
+		s='  <div class="card" style="padding:5px;">\
+				<h3 style="margin:5px">'+label+'</h3>\
+				<ion-list>\
+					<ion-item ng-repeat="i in '+value+'" style="height:30px;padding:3px;margin:3px;border:none;box-shadow:0px 1px 2px #eeeeee;/*border-color:#gggggg;border-top:none;border-radius:3px*/">\
+						{{i}}\
+					</ion-item>\
+				</ion-list>\
+			</div>';
+
+	}
+	else if(type == 'boolean')
+	{
+		s='<div class="card" style="padding:5px;">\
+				<h3 style="float:left;margin:5px">'+label+'</h3>\
+				<span style="float:right; font: 16px calibri; margin:12px;color:#4a87ee;">'value.tr+':'+value.trvalue'<br/>'value.fl+':'+value.flvalue'</span>\
+			</div>';
+
+	}
+	else if(type == 'select')
+	{
+		s='<div class="card" style="padding:5px;">\
+				<h3 style="float:left;margin:5px">'+label+'</h3>\
+				<span style="float:right; font: 16px calibri; margin:12px;color:#4a87ee;"><span ng-repeat="i in '+value+'">{{i.index}} : {{i.value}}<br/></span>\
+			</div>';
+
+	}
+	else if(type == 'number')
+	{
+		s='<div class="card" style="padding:5px;">\
+				<h3 style="margin:5px">'+label+'</h3>\
+				\
+					<span ng-repeat="i in '+value+'" style="float:left;color:white;height:30px;padding:3px;margin:2px;background-color:#4a87ee;border-radius:3px">\
+						{{i}}\
+					</span>\
+			</div>';
+
+	}
+	
+  }
+  $scope.fill = [];
+  $scope.genResults = function(Qob,Rob)
+  {
+	for(var i =0;i<Qob.lenght;i++)
+	{
+		var q = Qob[i];
+		var r = Rob [i];
+		var ans;
+		if(q.type == 'rating') ans = $scope.genElement('rating',q.question,r);
+		else if(q.type == 'date') ans = $scope.genElement('date',q.question,r);
+		else if(q.type == 'long') 
+		{
+			$scope['long'+i] = r;
+			ans = $scope.genElement('long',q.question,'long'+i);
+		}
+		else if(q.type == 'boolean') ans = $scope.genElement('boolean',q.question,r);				// Possible YesOr NO\Boolean conflict
+		else if(q.type == 'select')
+		{
+			$scope['select'+i] = r;
+			ans = $scope.genElement('select',q.question,'select'+i);
+		}
+		else if(q.type == 'number')
+		{
+			$scope['number'+i] = r;
+			ans = $scope.genElement('number',q.question,'number'+i);
+		}
+
+		
+		$scope.fill.push($sce.trustAsHtml(ans))
+	}
+  }
+  
+  
+  
+  $scope.dummyQ={}
+  
+})
+
 
 .controller('AccountCtrl', function($scope) {
 })
