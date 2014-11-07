@@ -23,15 +23,15 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('SendFeedbackCtrl', function($scope,$sce) {
+.controller('SendFeedbackCtrl', function($scope,$sce,form) {
 
-$scope.dummy = [{"type":"rating","question":"How is this?","options":{}},
+/*$scope.dummy = [{"type":"rating","question":"How is this?","options":{}},
 				{"type":"yesorno","question":"Did u like it?","options":{}},
 				{"type":"date","question":"When do u want it?","options":{}},
 				{"type":"long","question":"Tell Me about yourself","options":{"placeholder" : "Text Goes here"}},
 				{"type":"number","question":"can i have ur nunber","options":{"placeholder" : "eg : 10"}},
 				{"type":"select","question":"Pick one","options":{"values":['pallal','chukka','niraj']}}
-];
+];*/
 
 	$scope.genElement = function(type,args) //i think u need to put it in services.
 	{		
@@ -43,7 +43,7 @@ $scope.dummy = [{"type":"rating","question":"How is this?","options":{}},
 					<h4>' +args[0] + '</h4>\
 						<div class="range range-positive">\
 							<i class="icon ion-sad"></i>\
-							<input type="range" name="volume">\
+							<input class="valueHolder" type="range" name="volume">\
 							<i class="icon ion-happy"></i>\
 						</div>\
 				</div>';
@@ -54,7 +54,7 @@ $scope.dummy = [{"type":"rating","question":"How is this?","options":{}},
 			s = '<div class="card">\
 				<label class="item item-input no-list-border">\
 					<span class="input-label h4">'+args[0]+'</span>\
-					<input type="number" placeholder="'+args[1]+'">\
+					<input class="valueHolder" type="number" placeholder="'+args[1]+'">\
 				</label>\
 			</div>';
 		}
@@ -64,7 +64,7 @@ $scope.dummy = [{"type":"rating","question":"How is this?","options":{}},
 			s = '<div class="card">\
 					<label class="item item-input no-list-border">\
 						<span class="input-label h4">'+args[0]+'</span>\
-						<input type="date" placeholder="dd/mm/yyyy">\
+						<input class="valueHolder" type="date" placeholder="dd/mm/yyyy">\
 					</label>\
 				</div>';
 		}
@@ -73,7 +73,7 @@ $scope.dummy = [{"type":"rating","question":"How is this?","options":{}},
 			//type = long, args = [Label,placeholder,rows]
 			s = '<div class="card">\
 					<h4>'+args[0]+'</h4>\
-					<textarea placeholder="'+ args[1] +'" rows='+ args[2] +'>\</textarea>\
+					<textarea class="valueHolder" placeholder="'+ args[1] +'" rows='+ args[2] +'>\</textarea>\
 				</div>';
 		}
 		else if(type == 'boolean')
@@ -83,7 +83,7 @@ $scope.dummy = [{"type":"rating","question":"How is this?","options":{}},
 						  <label class="item item-toggle no-list-border">\
 							 <span class="h4">'+args[0]+'</span>\
 							 <label class="toggle toggle-positive">\
-							   <input type="checkbox" ng-model="yesornoValueBool" ng-change="yesOrNoFunc()">\
+							   <input class="valueHolder" type="checkbox" ng-model="yesornoValueBool" ng-change="yesOrNoFunc()">\
 							   <div class="track">\
 								 <div class="handle"></div>\
 							   </div>\
@@ -100,7 +100,7 @@ $scope.dummy = [{"type":"rating","question":"How is this?","options":{}},
 						<div class="input-label">\
 						  <span class="h4">'+args[0]+'</span>\
 						</div>\
-						<select>';
+						<select class="valueHolder">';
 						
 						for(var i=0;i<args[1].length;i++)
 							s+= '<option>'+args[1][i]+'</option>';
@@ -116,12 +116,10 @@ $scope.dummy = [{"type":"rating","question":"How is this?","options":{}},
 	}
 		
 		$scope.genForm = function (questionOb){
-		//alert(questionOb);
+			console.log(questionOb);
 			var s=[];
 			for (var i =0;i< questionOb.length;i++)
-			{
-				
-				var type = questionOb[i].type;
+			{var type = questionOb[i].type;
 				var question = questionOb[i].question;
 				var op = questionOb[i].myargs;
 				if(type == 'yesorno') s.push($scope.genElement('boolean',[question])); 
@@ -133,16 +131,26 @@ $scope.dummy = [{"type":"rating","question":"How is this?","options":{}},
 				//else if(type == 'select') alert(op.values);
 				
 			}
+			this.fill = s;
 			return s;
 			
 			
 		}
 		
-		$scope.fill = $scope.genForm($scope.dummy);
+		form.get($scope,$scope.genForm);
+		form.insert();
 		
-		console.log($scope.fill);
-		
-		
+		$scope.submit = function(){
+			var ob = document.getElementsByClassName('valueHolder');
+			alert("submit called");
+			AnswerArr = []
+			for(var i=0;i<ob.length;i++)
+			{
+				AnswerArr.push(ob[i].value);
+			}
+			console.log("Answers ->\n",AnswerArr);
+			$scope.resultsDisplay = AnswerArr;
+		}
 	
 })
 

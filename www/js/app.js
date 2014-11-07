@@ -19,6 +19,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       StatusBar.styleDefault();
 	  
     }
+	
+	Parse.initialize("ojt8l3zRlv5UB2ZX196lefTmnvP7mleBInzOyJMq","QXNu3U0ypMH4tojDCBLc89NG3Ofyg1vNfMHkaUsG");
   });
 })
 
@@ -85,6 +87,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         'tab-account': {
           templateUrl: 'templates/add-feedback.html',
           controller: 'AddFeedbackCtrl'
+        }
+      }
+    })
+
+	.state('tab.results', {
+      url: '/results',
+      views: {
+        'tab-results': {
+          templateUrl: 'templates/results.html',
+          controller: 'resultctrl'
         }
       }
     })
