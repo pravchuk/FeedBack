@@ -18,7 +18,7 @@ angular.module('starter.controllers', [])
   $scope.friend = Friends.get($stateParams.friendId);
 })
 
-.controller('resultsctrl', function($scope,$sce) {
+.controller('resultsctrl', function($scope,$sce,$compile) {
   $scope.things=['Pallal is awesome','so is prafulla','this is the best app','i like ravi and chukka app'];
   $scope.nos=['9845655555','9845990052','9986560718','8971780631'];
   
@@ -72,8 +72,8 @@ angular.module('starter.controllers', [])
 	}
 	else if(type == 'number')
 	{
-		s='<div class="card" style="padding:5px;">\
-				<h3 style="margin:5px">'+label+'</h3>\
+		s='<div class="card" style="padding:5px;" >\
+				<h3 style="margin:5px" >'+label+'</h3>\
 				\
 					<span ng-repeat="i in '+value+'" style="float:left;color:white;height:30px;padding:3px;margin:2px;background-color:#4a87ee;border-radius:3px">\
 						{{i}}\
@@ -82,16 +82,19 @@ angular.module('starter.controllers', [])
 
 	}
 	
+	console.log($compile(s)($scope)[0]);
+	return s;
   }
   $scope.fill = [];
   $scope.genResults = function(Qob,Rob)
   {
-	for(var i =0;i<Qob.lenght;i++)
+	for(var i =0;i<Qob.length;i++)
 	{
+	//	alert("hi");
 		var q = Qob[i];
 		var r = Rob [i];
 		var ans;
-		if(q.type == 'rating') ans = $scope.genElement('rating',q.question,r);
+		if(q.type == 'rating')  ans = $scope.genElement('rating',q.question,r);
 		else if(q.type == 'date') ans = $scope.genElement('date',q.question,r);
 		else if(q.type == 'long') 
 		{
@@ -110,15 +113,25 @@ angular.module('starter.controllers', [])
 			ans = $scope.genElement('number',q.question,'number'+i);
 		}
 
-		
-		$scope.fill.push($sce.trustAsHtml(ans))
+		//console.log(ans);
+		$scope.fill.push($sce.trustAsHtml(ans));
 	}
   }
   
   
   
-  $scope.dummyQ={}
+  $scope.dummyQ =[{"type":"rating","question":"How is this?","options":{}},
+				{"type":"boolean","question":"Did u like it?","options":{}},
+				{"type":"date","question":"When do u want it?","options":{}},
+				{"type":"rating","question":"TestId?","options":{}},
+				{"type":"long","question":"Tell Me about yourself","options":{"placeholder" : "Text Goes here"}},
+				{"type":"number","question":"can i have ur nunber","options":{"placeholder" : "eg : 10"}},
+				{"type":"select","question":"Pick one","options":{"values":['pallal','chukka','niraj']}}];
+	$scope.dummyR = [2.5,{tr:"YES",fl:"NO",trvalue:10,flvalue:30},"21-12-1994",9.5,["Chukka Sucks","Niraj Sucks More","Rashmi also sucks","Who doesnt suck?"],[9900591630,9986560718,9845990052,8971780631],[{index:"Pallal",value:1000},{index:"chukka",value:100},{index:"Niraj",value:87}]];			
+
   
+  $scope.genResults($scope.dummyQ,$scope.dummyR);
+  console.log($scope.fill);
 })
 
 

@@ -4,11 +4,14 @@
 		<span style="font-size:50px;width:50%;">Overall Rating</span>
 		<span style ="float:right;height:100px"><img style ="height:100%" src="/img/star.png" class="round-edges"/></span>
 	</div-->
+	
 	<div class="card" style="padding:20px;background-color:#f4f4f4;">
 	  	<h3 style="float:left;margin:20px">Overall Rating</h3>
 		<img style="width:74px;float:right;position:relative;" src="/img/star.png"><span style="font:20px calibri;color:white;position:absolute;right:45px;top:47px">9.8</span></img>
 	</div>
-  
+	
+	<div ng-bind-html="item" ng-repeat="item in fill track by $index"></div>
+  <!--
 	<div class="card" style="padding:5px;">
 	  	<h3 style="float:left;margin:5px">Rating</h3>
 		<img style="width:54px;float:right;position:relative;" src="/img/star.png"></img>
@@ -47,7 +50,7 @@
 			</span>
 		
 	</div>
-  
+  -->
 	
 	
   </ion-content>
