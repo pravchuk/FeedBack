@@ -1,96 +1,28 @@
 angular.module('starter.controllers', [])
 
-/*
-.controller('DashCtrl',['$scope','form',function($scope,$state,form){
+
+.controller('DashCtrl',['$scope','form',function($scope,form){
+
     form.getAll().success(function(data){
 	    $scope.hashtags=data.results;
     });
-  $scope.onTabSelected = function() {
-  alert("xcalled");
-    $state.go('tab.tab-dash');
-  }
-}])*/
 
-// controller for firebase
-.controller("loginCtrl", function($scope, $rootScope, $firebase, $firebaseSimpleLogin) {
-  // Get a reference to the Firebase
-  // TODO: Replace "ionic-demo" below with the name of your own Firebase
-  var firebaseRef = new Firebase("https://ionic-demo.firebaseio.com/");
+}])
 
-  // Create a Firebase Simple Login object
-  $scope.auth = $firebaseSimpleLogin(firebaseRef);
-
-  // Initially set no user to be logged in
-  $scope.user = null;
-
-  // Logs a user in with inputted provider
-  $scope.login = function(provider) {
-    $scope.auth.$login(provider);
-  };
-
-  // Logs a user out
-  $scope.logout = function() {
-    $scope.auth.$logout();
-  };
-
-  // Upon successful login, set the user object
-  $rootScope.$on("$firebaseSimpleLogin:login", function(event, user) {
-    $scope.user = user;
-  });
-
-  // Upon successful logout, reset the user object
-  $rootScope.$on("$firebaseSimpleLogin:logout", function(event) {
-    $scope.user = null;
-  });
-
-  // Log any login-related errors to the console
-  $rootScope.$on("$firebaseSimpleLogin:error", function(event, error) {
-    console.log("Error logging user in: ", error);
-  });
-})
-
-
-
-
-.controller('DashCtrl', function($scope, $state,form) {
-   form.getAll().success(function(data){
-	    $scope.hashtags=data.results;
-    });
-  $scope.onTabSelected = function() {
-	$state.go('tab.dash');
-  }
-  $scope.some = function(a){console.log("onclick called");
-  $scope.$broadcast('eve', a);//$scope.some1(a);
-  }
-})
-
-.controller('FriendsCtrl', function($scope,$state, Friends) {
+.controller('FriendsCtrl', function($scope, Friends) {
   $scope.friends = Friends.all();
-  $scope.onTabSelected = function() {
-	$state.go('tab.friends');
-  }
 })
 
-.controller('resultsCtrl', function($scope,$sce,$compile,form) {     
-	
-	
-	Parse.Cloud.run('gen_results', { hash: '#MSEpresentation' }, {        // calling method implemented in main.js
-		
-		success: function(ratings) {
-		//alert("cloud success");
-		//alert(ratings);
-		var qob = ratings.pop();
-		console.log(ratings);
-		$scope.genResults(qob,ratings);
-			// ratings should be 4.5
-		},
-		error: function(error) {alert("inside error");console.log(error);
-		}
-	});
-	
-	
-	// prafulla's code for resultCtrl
-	
+
+.controller('FriendDetailCtrl', function($scope, $stateParams, Friends) {
+  $scope.friend = Friends.get($stateParams.friendId);
+})
+
+.controller('resultsctrl', function($scope,$sce,$compile) {
+  $scope.things=['Pallal is awesome','so is prafulla','this is the best app','i like ravi and chukka app'];
+  $scope.nos=['9845655555','9845990052','9986560718','8971780631'];
+  
+  
   $scope.genElement = function(type,label,value)
   {
 	var s;
@@ -114,13 +46,11 @@ angular.module('starter.controllers', [])
 	{
 		s='  <div class="card" style="padding:5px;">\
 				<h3 style="margin:5px">'+label+'</h3>\
-				<ion-list>';
-				for (var i in value){	
-				
-					s+= '<ion-item style="padding:5px;margin:3px;border:none;box-shadow:0px 1px 2px #eeeeee;/*border-color:#gggggg;border-top:none;border-radius:3px*/">\
-					'+value[i]+'</ion-item>';
-				}
-			s+=	'</ion-list>\
+				<ion-list>\
+					<ion-item ng-repeat="i in '+value+'" style="height:30px;padding:3px;margin:3px;border:none;box-shadow:0px 1px 2px #eeeeee;/*border-color:#gggggg;border-top:none;border-radius:3px*/">\
+						{{i}}\
+					</ion-item>\
+				</ion-list>\
 			</div>';
 
 	}
@@ -136,88 +66,80 @@ angular.module('starter.controllers', [])
 	{
 		s='<div class="card" style="padding:5px;">\
 				<h3 style="float:left;margin:5px">'+label+'</h3>\
-				<span style="float:right; font: 16px calibri; margin:12px;color:#4a87ee;">'
-			for (var i in value){	
-				s+='<span>'+value[i].index+' :'+value[i].value+'<br/></span>';
-				}
-				// S+='<span ng-repeat="i in '+value+'">{{i.index}} : {{i.value}}<br/></span>'
-		s+='</div>';
+				<span style="float:right; font: 16px calibri; margin:12px;color:#4a87ee;"><span ng-repeat="i in '+value+'">{{i.index}} : {{i.value}}<br/></span>\
+			</div>';
 
 	}
 	else if(type == 'number')
 	{
-		s='<div class="card" style="padding:5px;">\
-				<h3 style="margin:5px">'+label+'</h3>'
-		for (var i in value){	
-				s+= ' <span style="float:left;color:white;height:30px;padding:3px;margin:2px;background-color:#4a87ee;border-radius:3px">\
-						' + value[i] + '\
-					</span>'}
-		s+=	'</div>';
+		s='<div class="card" style="padding:5px;" >\
+				<h3 style="margin:5px" >'+label+'</h3>\
+				\
+					<span ng-repeat="i in '+value+'" style="float:left;color:white;height:30px;padding:3px;margin:2px;background-color:#4a87ee;border-radius:3px">\
+						{{i}}\
+					</span>\
+			</div>';
 
 	}
-	return s;
 	
+	console.log($compile(s)($scope)[0]);
+	return s;
   }
   $scope.fill = [];
   $scope.genResults = function(Qob,Rob)
   {
-	console.log("gen Called");
 	for(var i =0;i<Qob.length;i++)
 	{
-		console.log("infor");
+	//	alert("hi");
 		var q = Qob[i];
 		var r = Rob [i];
-		console.log(q,r);
 		var ans;
-		//console.log($scope.genElement('rating',q.question,r));
-		if(q.type == 'rating') ans = $scope.genElement('rating',q.question,r);
+		if(q.type == 'rating')  ans = $scope.genElement('rating',q.question,r);
 		else if(q.type == 'date') ans = $scope.genElement('date',q.question,r);
 		else if(q.type == 'long') 
 		{
-			//$scope['long'+i] = r;
-			ans = $scope.genElement('long',q.question,r);
+			$scope['long'+i] = r;
+			ans = $scope.genElement('long',q.question,'long'+i);
 		}
 		else if(q.type == 'boolean') ans = $scope.genElement('boolean',q.question,r);				// Possible YesOr NO\Boolean conflict
 		else if(q.type == 'select')
 		{
-			//$scope['select'+i] = r;
-			ans = $scope.genElement('select',q.question,r);
+			$scope['select'+i] = r;
+			ans = $scope.genElement('select',q.question,'select'+i);
 		}
 		else if(q.type == 'number')
 		{
-			//$scope['number'+i] = r;
-			ans = $scope.genElement('number',q.question,r);
+			$scope['number'+i] = r;
+			ans = $scope.genElement('number',q.question,'number'+i);
 		}
-	//console.log(ans);
-		
-		$scope.fill.push($sce.trustAsHtml(ans))
-		
+
+		//console.log(ans);
+		$scope.fill.push($sce.trustAsHtml(ans));
 	}
-	console.log($scope.fill);
-	//console.log($scope.long3);
   }
   
   
   
-  $scope.dummyQ={}
+  $scope.dummyQ =[{"type":"rating","question":"How is this?","options":{}},
+				{"type":"boolean","question":"Did u like it?","options":{}},
+				{"type":"date","question":"When do u want it?","options":{}},
+				{"type":"rating","question":"TestId?","options":{}},
+				{"type":"long","question":"Tell Me about yourself","options":{"placeholder" : "Text Goes here"}},
+				{"type":"number","question":"can i have ur nunber","options":{"placeholder" : "eg : 10"}},
+				{"type":"select","question":"Pick one","options":{"values":['pallal','chukka','niraj']}}];
+	$scope.dummyR = [2.5,{tr:"YES",fl:"NO",trvalue:10,flvalue:30},"21-12-1994",9.5,["Chukka Sucks","Niraj Sucks More","Rashmi also sucks","Who doesnt suck?"],[9900591630,9986560718,9845990052,8971780631],[{index:"Pallal",value:1000},{index:"chukka",value:100},{index:"Niraj",value:87}]];			
+
   
-
-
-})
-
-.controller('FriendDetailCtrl', function($scope, $stateParams, Friends) {
-  $scope.friend = Friends.get($stateParams.friendId);
-})
-
-.controller('AccountCtrl', function($scope,$state) {
-
-$scope.onTabSelected = function() {
-	$state.go('tab.account');
-  }
+  $scope.genResults($scope.dummyQ,$scope.dummyR);
+  console.log($scope.fill);
 })
 
 
-.controller('SendFeedbackCtrl', function($scope,$sce,$location,form) {
+.controller('AccountCtrl', function($scope) {
+})
+
+
+.controller('SendFeedbackCtrl', function($scope,$sce,form) {
 
 /*$scope.dummy = [{"type":"rating","question":"How is this?","options":{}},
 				{"type":"yesorno","question":"Did u like it?","options":{}},
@@ -281,6 +203,9 @@ $scope.onTabSelected = function() {
 							   <div class="track">\
 								 <div class="handle"></div>\
 							   </div>\
+							 </label>\
+							 <span class="yesorno positive">{{yesornoValue}}</span>\
+						  </label>\
 					</div>';
 		}
 		else if(type == 'select')
@@ -306,13 +231,13 @@ $scope.onTabSelected = function() {
 		return $sce.trustAsHtml(s);
 	}
 		
-		$scope.genForm = function (questionOb,z){          
+		$scope.genForm = function (questionOb){
 			console.log(questionOb);
 			var s=[];
 			for (var i =0;i< questionOb.length;i++)
 			{var type = questionOb[i].type;
 				var question = questionOb[i].question;
-				var op = questionOb[i].options;
+				var op = questionOb[i].myargs;
 				if(type == 'yesorno') s.push($scope.genElement('boolean',[question])); 
 				else if(type == 'rating') s.push($scope.genElement('rating',[question])); 
 				else if(type == 'number') s.push($scope.genElement('number',[question,op.placeholder])); 
@@ -328,18 +253,8 @@ $scope.onTabSelected = function() {
 			
 		}
 		
-		$scope.fun = function(a){
-			alert(a);
-			$location.path("/tab/sendfeedback");
-			
-		}
-		//alert(a);
 		form.get($scope,$scope.genForm);
-		
-		/*$scope.$on('eve', function(event,response) {
-		alert("getting called");
-		alert(response);
-      });*/
+		form.insert();
 		
 		$scope.submit = function(){
 			var ob = document.getElementsByClassName('valueHolder');
@@ -350,9 +265,9 @@ $scope.onTabSelected = function() {
 				AnswerArr.push(ob[i].value);
 			}
 			console.log("Answers ->\n",AnswerArr);
-			form.insert(AnswerArr,0,0,1);//$scope.resultsDisplay = AnswerArr;
+			$scope.resultsDisplay = AnswerArr;
 		}
-	//form.insert($scope.);
+	
 })
 
 /*
@@ -379,28 +294,20 @@ $scope.questionFields = {"long" :{"type":"long","question":"","options":{"size",
 	}
 })
 
-.controller('AddFeedbackCtrl', function(form ,$scope,$ionicPopup,$ionicModal,$sce,$timeout, AddFeedBackQuestionsObject, globalFunctions) {
+.controller('AddFeedbackCtrl', function($scope,$ionicPopup,$ionicModal,$sce,$timeout, AddFeedBackQuestionsObject, globalFunctions) {
 
-// to find location . using HTML geolocation now . also the process involves asynchronous calls .
-var location ;
-locationReceiver = function(loc){
-location = loc ;
-//console.log(location)
-}
 
-form.getLocation($scope,locationReceiver);
+
 
   //$scope.qObject = {};
 
 $scope.fill = [];
   
-//s = fill ;
-  var s =[];
-  $scope.genForm = function (){
-		//questionOb = $scope.myquestionObj ;
-      //console.log(questionOb);
-      //var s=[];                        //    commented by niraj
-     /*for (var i =0;i< questionOb.length;i++)
+
+  $scope.genForm = function (questionOb){
+      //alert(questionOb);
+      var s=[];
+      for (var i =0;i< questionOb.length;i++)
       {
         var type = questionOb[i].itype;
         var question = questionOb[i].myquestion;
@@ -415,12 +322,9 @@ $scope.fill = [];
         // else if(type == 'date') s.push($sce.trustAsHtml(globalFunctions.genElement('date',$scope.myquestion,$scope.myargs)));
         // else if(type == 'select') s.push($sce.trustAsHtml(globalFunctions.genElement('select',$scope.myquestion,$scope.myargs)));
         
-      }        */   //  till here
-	  
-	  console.log("logging");
+      }
       console.log(s);
-	  form.insert(s,location[0],location[1],0)
-      
+      return s;
       
       
     }
@@ -588,18 +492,6 @@ $scope.fill = [];
             $scope.populateForm($scope.data.typeofquestion,$scope.myquestionObj.myquestion,$scope.myquestionObj.myargs);
             console.log($scope.myquestionObj.myquestion);
             console.log($scope.myquestionObj.myargs);
-            console.log($scope.myquestionObj);
-			//$scope.genForm($scope.myquestionObj);
-			$scope.myquestionObj = {question : $scope.myquestionObj.myquestion,type : $scope.myquestionObj.type,options : $scope.myquestionObj.myargs,};
-			//$scope.myquestionObj.question = $scope.myquestionObj.myquestion;
-			//delete $scope.myquestionObj.myquestion;
-			//someobj = $scope.myquestionObj;
-			s.push($scope.myquestionObj);
-			//$scope.myquestionObj = {Pallal:"sucks"}; 
-//s.push($scope.myquestionObj);			// somehow reference is getting pushed even after dereferencing .
-			$scope.myquestionObj = {};
-			console.log(s);
-			console.log("break");
             
            }
         }
@@ -614,7 +506,4 @@ $scope.fill = [];
 .controller('QuestionInputCtrl', function($scope, AddFeedBackQuestionsObject){
   $scope.myquestionObj = AddFeedBackQuestionsObject;
   $scope.myargs = $scope.myquestionObj.myargs;
-})
-
-
-;
+});

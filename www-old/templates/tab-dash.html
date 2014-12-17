@@ -1,0 +1,54 @@
+<ion-view title="Feedback">
+  <ion-content class="padding">
+    
+    <!--HASHTAG -->
+    <div class="list list-inset">
+	  <label class="item item-input">
+	    <i class="placeholder-icon default-color">#</i>
+	    <input type="text" placeholder="HASHTAG" class="hashtag default-color">
+	  </label>
+	</div>
+
+	<!-- GeoLocation Search -->
+	<h4 align="center">Near You</h4>
+  <ion-list class="list">
+      <ion-item ng-repeat="hastagi in hashtags" type="item-text-wrap" href="#/tab/sendfeedback"class="item item-icon-left" >
+    <i class="icon {{hastagi.icon}}"></i>{{hastagi.hash}}<span class="badge">{{hastagi.note}}</span>
+      </ion-item>
+    </ion-list>
+	<!--<div class="list">
+
+  <a class="item item-icon-left" href="#">
+    <i class="icon ion-email"></i>
+    #GMAIL2014HACK
+    <span class="badge badge-positive">96</span>
+  </a>
+
+  <a class="item item-icon-left item-icon-right" href="#">
+    <i class="icon ion-chatbubble-working"></i>
+    #LineHACK
+    <span class="badge badge-positive">202</span>
+  </a>
+
+  <a class="item item-icon-left" href="#">
+    <i class="icon ion-mic-a"></i>
+    #RaghuDixitConcert14
+    <span class="badge badge-positive">32</span>
+  </a>
+
+  <a class="item item-icon-left" href="#">
+    <i class="icon ion-person-stalker"></i>
+    #FacebookDisrupt14
+    <span class="badge badge-positive">14</span>
+  </a>
+
+  <a class="item item-icon-left" href="#">
+    <i class="icon ion-flask"></i>
+    #MSELAB2014
+    <span class="badge badge-positive">2</span>
+  </a>
+
+</div>-->
+
+  </ion-content>
+</ion-view>

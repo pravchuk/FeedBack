@@ -19,7 +19,15 @@
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
+ <!-- for firebase authentication -->
+	<!-- Firebase -->
+<script src="https://cdn.firebase.com/js/client/1.0.17/firebase.js"></script>
 
+<!-- Firebase Simple Login -->
+<script src="https://cdn.firebase.com/js/simple-login/1.6.2/firebase-simple-login.js"></script>
+
+<!-- AngularFire -->
+<script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.js"></script>
 
 
 
@@ -43,5 +51,23 @@
       have templates inline in this html file if you'd like).
     -->
     <ion-nav-view></ion-nav-view>
+	<ion-pane>
+  <ion-header-bar class="bar-stable">
+    <h1 class="title">Ionic Blank Starter</h1>
+  </ion-header-bar>
+
+  <ion-content ng-controller="loginCtrl">
+    <!-- Buttons -->
+    <button class="button button-full button-positive" ng-click="login('facebook')">Login with Facebook</button>
+    <button class="button button-full button-outline button-assertive" ng-click="logout()">Logout</button>
+
+    <!-- Logged-in user text -->
+    <div class="card">
+      <div class="item item-text-wrap" ng-hide="user">User not logged in</div>
+      <div class="item item-text-wrap" ng-show="user" ng-bind="user.uid"></div>
+    </div>
+  </ion-content>
+</ion-pane>
+
   </body>
 </html>

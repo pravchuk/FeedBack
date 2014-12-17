@@ -16,62 +16,38 @@ angular.module('starter.services',[])
 			query.equalTo("hash", "#MSEpresentation");
 			query.find({
 				success: function(results) {
-					resCallback.call(scope,results[0].get('layout'),1);
+					//alert("Successfully retrieved " + results.length + " scores.");
+					resCallback.call(scope,results[0].get('layout'));
+					//console.log(scope.text);
 			},
 		error: function(error) {
 			alert("Error: " + error.code + " " + error.message);
 		}
 	});
 		},
-		
-        getResult:function(scope,resCallback){
-		},
-		
-		getLocation:function(scope,rescallback){
-		if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(showPosition);
-			} else {
-				console.log("Geolocation is not supported by this browser.");
-			}
-			function showPosition(position) {
-				rescallback.call(scope,[position.coords.latitude,position.coords.longitude])
-			}
-		},
-		
-		insert:function(ip,lat,longi,result){
+			insert:function(){
 			
-				//var ip = [9,8,"prafulla","no"];
-				//Extend the native Parse.Object class on the basis of parameter result (if its result or layout)
-				if(result == 1){
-					var Input = Parse.Object.extend("results");
-					//Instantiate an object of the Input class
-					var input = new Input();
-					//listItem is now the object that we want to save, so we assign the properties that we want on it.
-					//input.set("fid", "somefid");
-					input.set("user_input", ip);
-				}
-				else{
-					var Input = Parse.Object.extend("form");
-					//Instantiate an object of the Input class
-					var input = new Input();
-					//listItem is now the object that we want to save, so we assign the properties that we want on it.
-					//input.set("fid", "somefid");
-					console.log("logging 4m insert");
-					console.log(ip);
-					input.set("layout", ip);
-					input.set("latitude", lat);
-					input.set("longitude", longi);
-				}
 				
+				var ip = [9,8,"prafulla","no"];
+			
+				//Extend the native Parse.Object class.
+				var Input = Parse.Object.extend("results");
+ 
+				//Instantiate an object of the Input class
+				var input = new Input();
+ 
+				//listItem is now the object that we want to save, so we assign the properties that we want on it.
+				//input.set("fid", "somefid");
+				input.set("user_input", ip);
  
 				//We call the save method, and pass in success and failure callback functions.
 				input.save(null, {       
 					success: function(item) {
-					console.log("insert success");
+					
 					//Success Callback 
 				},
 				error: function(gameScore, error) {
-					console.log("insertion failed");
+					alert("insertion failed");
 					//Failure Callback
 				}
 				});
@@ -202,7 +178,13 @@ angular.module('starter.services',[])
                                      <span class="h4">'+question+'</span>\
                                      <label class="toggle toggle-positive">\
                                        <input type="checkbox" ng-model="yesornoValueBool" ng-change="yesOrNoFunc()">\
-                                       </div>';
+                                       <div class="track">\
+                                         <div class="handle"></div>\
+                                       </div>\
+                                     </label>\
+                                     <span class="yesorno positive">{{yesornoValue}}</span>\
+                                  </label>\
+                            </div>';
                 }
                 else if(type === 'select')
                 {

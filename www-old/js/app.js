@@ -1,14 +1,3 @@
-// inject firebase
-/*
-var myApp = angular.module("starter", ["ionic", "firebase"]);
-myApp.run(function($ionicPlatform) {
-  
-});
-*/
-
-
-
-
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
@@ -95,7 +84,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     .state('tab.addfeedback', {
       url: '/addfeedback',
       views: {
-        'tab-friends': {
+        'tab-account': {
           templateUrl: 'templates/add-feedback.html',
           controller: 'AddFeedbackCtrl'
         }
@@ -107,7 +96,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       views: {
         'tab-friends': {
           templateUrl: 'templates/results.html',
-          controller: 'resultsCtrl'
+          controller: 'resultsctrl'
         }
       }
     })
@@ -115,7 +104,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     .state('tab.sendfeedback', {
       url: '/sendfeedback',
       views: {
-        'tab-dash': {
+        'tab-account': {
           templateUrl: 'templates/sendfeedback.html',
           controller: 'SendFeedbackCtrl'
         }
@@ -128,29 +117,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   $urlRouterProvider.otherwise('/tab/dash');
 
 });
-
-/*
-.controller('TabsCtrl', function($scope, $ionicTabsDelegate) {
-  $scope.goHome = function() {
-    console.log($ionicTabsDelegate.$getByHandle('my-tabs'));
-    console.log($ionicTabsDelegate.$getByHandle('my-tabs').selectedIndex());
-    $ionicTabsDelegate.$getByHandle('my-tabs').select(0);
-    
-  }  
-})
-
-
-.controller('HomeTabLocalCtrl', function($scope, $state) {
-console.log("some");
-  console.log('HomeTabLocalCtrl');
-  
-  $scope.onTabSelected = function() {
-    $state.go('tab.tab-dash');
-  }
-  
-})*/
-
-
 
 
 
